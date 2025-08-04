@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pasta Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdf6f0;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #8B0000;
+    }
+    .image-box {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 250px;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      width: 250px;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+    .team-buttons button {
+      margin: 5px;
+      background-color: #eee;
+    }
+    .hidden {
+      display: none;
+    }
+    .clue-box {
+      margin-top: 20px;
+      padding: 10px;
+      background: #fff7d6;
+      border-left: 5px solid #ccc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Guess the Pasta</h1>
+  <form id="gameForm">
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Penne_pasta.jpg" alt="Penne">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="penne">
+    </div>
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Fusilli_pasta.jpg" alt="Fusilli">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="fusilli">
+    </div>
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Spaghetti_1kg.jpg" alt="Spaghetti">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="spaghetti">
+    </div>
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Farfalle_pasta.jpg" alt="Farfalle">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="farfalle">
+    </div>
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Lasagna_pasta.jpg" alt="Lasagna">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="lasagna">
+    </div>
+    <div class="image-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Macaroni_aka_Elbow_pasta.jpg" alt="Macaroni">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="macaroni">
+    </div>
+    <button type="submit">Submit Answers</button>
+  </form>
+
+  <div id="teamSection" class="hidden">
+    <h2>Choose Your Team</h2>
+    <div class="team-buttons">
+      <button onclick="showClue('red')">Red Team</button>
+      <button onclick="showClue('blue')">Blue Team</button>
+      <button onclick="showClue('green')">Green Team</button>
+      <button onclick="showClue('yellow')">Yellow Team</button>
+    </div>
+  </div>
+
+  <div id="clueBox" class="clue-box hidden"></div>
+
+  <script>
+    const form = document.getElementById('gameForm');
+    const teamSection = document.getElementById('teamSection');
+    const clueBox = document.getElementById('clueBox');
+
+    const clues = {
+      red: "🔴 Red Team Clue: Find the tomato hidden near the fountain.",
+      blue: "🔵 Blue Team Clue: Look for the pasta pot where the water bubbles.",
+      green: "🟢 Green Team Clue: Search beneath the basil leaves in the garden.",
+      yellow: "🟡 Yellow Team Clue: The golden trail begins near the cheese wheel."
+    };
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const inputs = form.querySelectorAll('input');
+      let allCorrect = true;
+
+      inputs.forEach(input => {
+        const correctAnswer = input.dataset.answer.trim().toLowerCase();
+        const userAnswer = input.value.trim().toLowerCase();
+        if (userAnswer !== correctAnswer) {
+          allCorrect = false;
+        }
+      });
+
+      if (allCorrect) {
+        form.classList.add('hidden');
+        teamSection.classList.remove('hidden');
+      } else {
+        alert("One or more answers are incorrect. Please try again!");
+      }
+    });
+
+    function showClue(teamColor) {
+      clueBox.textContent = clues[teamColor];
+      clueBox.classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
