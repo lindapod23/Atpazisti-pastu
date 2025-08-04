@@ -6,50 +6,49 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fdf6f0;
+      background: #f8f8f8;
       padding: 20px;
     }
-    h1, h2 {
+    h1 {
       color: #8B0000;
     }
     .image-box {
       margin-bottom: 20px;
     }
     img {
-      width: 250px;
-      height: auto;
-      border: 2px solid #ccc;
-      border-radius: 5px;
+      width: 300px;
       display: block;
       margin-bottom: 10px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
     }
     input {
       padding: 8px;
       font-size: 16px;
-      width: 250px;
-      border-radius: 4px;
+      width: 300px;
+      margin-bottom: 20px;
       border: 1px solid #aaa;
+      border-radius: 4px;
     }
     button {
       padding: 10px 20px;
-      margin-top: 15px;
       font-size: 16px;
-      cursor: pointer;
+      margin-top: 10px;
       border: none;
       border-radius: 5px;
-    }
-    .team-buttons button {
-      margin: 5px;
-      background-color: #eee;
+      cursor: pointer;
     }
     .hidden {
       display: none;
     }
+    .team-buttons button {
+      margin: 5px;
+    }
     .clue-box {
       margin-top: 20px;
       padding: 10px;
-      background: #fff7d6;
-      border-left: 5px solid #ccc;
+      background: #fff3cd;
+      border-left: 5px solid #ffc107;
       font-weight: bold;
     }
   </style>
@@ -59,30 +58,10 @@
   <h1>Guess the Pasta</h1>
   <form id="gameForm">
     <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Penne_pasta.jpg" alt="Penne">
+      <img src="Penne.PNG" alt="Penne">
       <input type="text" placeholder="Type the name of this pasta" data-answer="penne">
     </div>
-    <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Fusilli_pasta.jpg" alt="Fusilli">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="fusilli">
-    </div>
-    <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Spaghetti_1kg.jpg" alt="Spaghetti">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="spaghetti">
-    </div>
-    <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Farfalle_pasta.jpg" alt="Farfalle">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="farfalle">
-    </div>
-    <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Lasagna_pasta.jpg" alt="Lasagna">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="lasagna">
-    </div>
-    <div class="image-box">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Macaroni_aka_Elbow_pasta.jpg" alt="Macaroni">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="macaroni">
-    </div>
-    <button type="submit">Submit Answers</button>
+    <button type="submit">Submit Answer</button>
   </form>
 
   <div id="teamSection" class="hidden">
@@ -103,35 +82,28 @@
     const clueBox = document.getElementById('clueBox');
 
     const clues = {
-      red: "🔴 Red Team Clue: Find the tomato hidden near the fountain.",
-      blue: "🔵 Blue Team Clue: Look for the pasta pot where the water bubbles.",
-      green: "🟢 Green Team Clue: Search beneath the basil leaves in the garden.",
-      yellow: "🟡 Yellow Team Clue: The golden trail begins near the cheese wheel."
+      red: "🔴 Red Team Clue: Find the tomato near the kitchen door.",
+      blue: "🔵 Blue Team Clue: Look where the water boils.",
+      green: "🟢 Green Team Clue: Search the herb garden under the basil.",
+      yellow: "🟡 Yellow Team Clue: Follow the cheese crumbs to the cupboard."
     };
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const inputs = form.querySelectorAll('input');
-      let allCorrect = true;
+      const input = form.querySelector('input');
+      const correctAnswer = input.dataset.answer.trim().toLowerCase();
+      const userAnswer = input.value.trim().toLowerCase();
 
-      inputs.forEach(input => {
-        const correctAnswer = input.dataset.answer.trim().toLowerCase();
-        const userAnswer = input.value.trim().toLowerCase();
-        if (userAnswer !== correctAnswer) {
-          allCorrect = false;
-        }
-      });
-
-      if (allCorrect) {
+      if (userAnswer === correctAnswer) {
         form.classList.add('hidden');
         teamSection.classList.remove('hidden');
       } else {
-        alert("One or more answers are incorrect. Please try again!");
+        alert("Incorrect answer. Please try again!");
       }
     });
 
-    function showClue(teamColor) {
-      clueBox.textContent = clues[teamColor];
+    function showClue(color) {
+      clueBox.textContent = clues[color];
       clueBox.classList.remove('hidden');
     }
   </script>
