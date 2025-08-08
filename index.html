@@ -1,160 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Pasta Guessing Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      text-align: center;
+      background: #f8f8f8;
       padding: 20px;
     }
-
+    h1 {
+      color: #8B0000;
+    }
     .image-box {
       margin-bottom: 20px;
     }
-
     img {
-      width: 200px;
-      height: auto;
+      width: 300px;
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
     }
-
-    input[type="text"] {
-      margin-top: 10px;
+    input {
       padding: 8px;
-      width: 200px;
+      font-size: 16px;
+      width: 300px;
+      margin-bottom: 20px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
     }
-
-    #submitBtn {
-      margin-top: 20px;
+    button {
       padding: 10px 20px;
       font-size: 16px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
-
-    .team-buttons {
-      margin-top: 30px;
+    .hidden {
       display: none;
     }
-
     .team-buttons button {
-      background-color: white;
-      border: 2px solid #ccc;
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 18px;
-      cursor: pointer;
+      margin: 5px;
     }
-
-    .red { color: red; }
-    .blue { color: blue; }
-    .green { color: green; }
-    .yellow { color: goldenrod; }
-
-    .clue {
+    .clue-box {
       margin-top: 20px;
-      font-size: 18px;
+      padding: 10px;
+      background: #fff3cd;
+      border-left: 5px solid #ffc107;
       font-weight: bold;
-      white-space: pre-line;
     }
   </style>
 </head>
 <body>
 
-  <h2>Guess the Type of Pasta</h2>
+  <h1>Atpazīsti pastu</h1>
+  <form id="gameForm">
+    <div class="image-box">
+      <img src="Penne.PNG" alt="Penne">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Penne">
+    </div>
+    <div class="image-box">
+      <img src="Farfalle.PNG" alt="Farfalle">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Farfalle">
+    </div>
+    <div class="image-box">
+      <img src="Fusilli.PNG" alt="Fusilli">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Fusilli">
+    </div>
+    <div class="image-box">
+      <img src="Lasagna.PNG" alt="Lasagna">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Lasagna">
+    </div>
+    <div class="image-box">
+      <img src="Macaroni.PNG" alt="Macaroni">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Macaroni">
+    </div>
+    <div class="image-box">
+      <img src="Spaghetti.PNG" alt="Spaghetti">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Spaghetti">
+    </div>
+    <button type="submit">Submit Answer</button>
+  </form>
 
-  <div class="image-box">
-    <img src="Penne.PNG" alt="Penne">
-    <br><input type="text" id="input1" placeholder="Type the pasta name">
+  <div id="teamSection" class="hidden">
+    <h2>Choose Your Team</h2>
+    <div class="team-buttons">
+  <button onclick="showClue('red')" style="color: red;">Sarkanā komanda</button>
+  <button onclick="showClue('blue')" style="color: blue;">Zilā komanda</button>
+  <button onclick="showClue('green')" style="color: green;">Zaļā komanda</button>
+  <button onclick="showClue('yellow')" style="color: goldenrod;">Dzeltenā komanda</button>
+</div>
   </div>
 
-  <div class="image-box">
-    <img src="Fusilli.PNG" alt="Fusilli">
-    <br><input type="text" id="input2" placeholder="Type the pasta name">
-  </div>
-
-  <div class="image-box">
-    <img src="Spaghetti.PNG" alt="Spaghetti">
-    <br><input type="text" id="input3" placeholder="Type the pasta name">
-  </div>
-
-  <div class="image-box">
-    <img src="Farfalle.PNG" alt="Farfalle">
-    <br><input type="text" id="input4" placeholder="Type the pasta name">
-  </div>
-
-  <div class="image-box">
-    <img src="Lasagna.PNG" alt="Lasagna">
-    <br><input type="text" id="input5" placeholder="Type the pasta name">
-  </div>
-
-  <div class="image-box">
-    <img src="Macaroni.PNG" alt="Macaroni">
-    <br><input type="text" id="input6" placeholder="Type the pasta name">
-  </div>
-
-  <button id="submitBtn">Submit Answers</button>
-
-  <div class="team-buttons" id="teamButtons">
-    <p>Choose your team:</p>
-    <button class="red" onclick="showClue('red')">Red Team</button>
-    <button class="blue" onclick="showClue('blue')">Blue Team</button>
-    <button class="green" onclick="showClue('green')">Green Team</button>
-    <button class="yellow" onclick="showClue('yellow')">Yellow Team</button>
-  </div>
-
-  <div class="clue" id="clueBox"></div>
+  <div id="clueBox" class="clue-box hidden"></div>
 
   <script>
-    const correctAnswers = ["penne", "fusilli", "spaghetti", "farfalle", "lasagna", "macaroni"];
+    const form = document.getElementById('gameForm');
+    const teamSection = document.getElementById('teamSection');
+    const clueBox = document.getElementById('clueBox');
 
-    function checkAnswers() {
-      const userAnswers = [];
-      for (let i = 1; i <= 6; i++) {
-        const inputVal = document.getElementById("input" + i).value.trim().toLowerCase();
-        userAnswers.push(inputVal);
-      }
-
-      const allCorrect = userAnswers.every((answer, index) => answer === correctAnswers[index]);
-
-      if (allCorrect) {
-        document.getElementById("teamButtons").style.display = "block";
-        alert("Correct! Choose your team to continue.");
-      } else {
-        alert("Some answers are incorrect. Try again!");
-      }
-    }
-
-    function showClue(team) {
-      const clues = {
-        red: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
+    const clues = {
+      red: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Kur ābolmaize smaržo un mīļi tev smaida,
 Kur tējas tase virtuvē gaida.
 Ne skolā, ne darbā, ne veikalā lielā,
 Bet pie omes uz mājām ved tavs ceļš.`,
-        blue: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
+      blue: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
 Te nedejo valsi, bet cīnās kā zvēri.
 Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`,
-        green: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
+      green: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
 Te nedejo valsi, bet cīnās kā zvēri.
 Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`,
-        yellow: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
+      yellow: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
 Te nedejo valsi, bet cīnās kā zvēri.
 Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`
-      };
+    };
 
-      document.getElementById("clueBox").textContent = clues[team];
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = form.querySelector('input');
+      const correctAnswer = input.dataset.answer.trim().toLowerCase();
+      const userAnswer = input.value.trim().toLowerCase();
+
+      if (userAnswer === correctAnswer) {
+        form.classList.add('hidden');
+        teamSection.classList.remove('hidden');
+      } else {
+        alert("Incorrect answer. Please try again!");
+      }
+    });
+
+    function showClue(color) {
+      clueBox.textContent = clues[color];
+      clueBox.classList.remove('hidden');
     }
-
-    document.getElementById("submitBtn").addEventListener("click", checkAnswers);
   </script>
 
 </body>
