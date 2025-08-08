@@ -9,12 +9,15 @@
       background: #f8f8f8;
       padding: 20px;
     }
+
     h1 {
       color: #8B0000;
     }
+
     .image-box {
       margin-bottom: 20px;
     }
+
     img {
       width: 300px;
       display: block;
@@ -22,6 +25,7 @@
       border-radius: 8px;
       border: 2px solid #ddd;
     }
+
     input {
       padding: 8px;
       font-size: 16px;
@@ -30,6 +34,7 @@
       border: 1px solid #aaa;
       border-radius: 4px;
     }
+
     button {
       padding: 10px 20px;
       font-size: 16px;
@@ -38,12 +43,17 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .hidden {
       display: none;
     }
+
     .team-buttons button {
       margin: 5px;
+      background-color: white;
+      border: 2px solid #ccc;
     }
+
     .clue-box {
       margin-top: 20px;
       padding: 10px;
@@ -56,14 +66,15 @@
 <body>
 
   <h1>Atpazīsti pastu</h1>
+
   <form id="gameForm">
-    <div class="image-box">
-      <img src="Penne.PNG" alt="Penne">
-      <input type="text" placeholder="Type the name of this pasta" data-answer="Penne">
-    </div>
     <div class="image-box">
       <img src="Farfalle.PNG" alt="Farfalle">
       <input type="text" placeholder="Type the name of this pasta" data-answer="Farfalle">
+    </div>
+    <div class="image-box">
+      <img src="Penne.PNG" alt="Penne">
+      <input type="text" placeholder="Type the name of this pasta" data-answer="Penne">
     </div>
     <div class="image-box">
       <img src="Fusilli.PNG" alt="Fusilli">
@@ -87,11 +98,11 @@
   <div id="teamSection" class="hidden">
     <h2>Choose Your Team</h2>
     <div class="team-buttons">
-  <button onclick="showClue('red')" style="color: red;">Sarkanā komanda</button>
-  <button onclick="showClue('blue')" style="color: blue;">Zilā komanda</button>
-  <button onclick="showClue('green')" style="color: green;">Zaļā komanda</button>
-  <button onclick="showClue('yellow')" style="color: goldenrod;">Dzeltenā komanda</button>
-</div>
+      <button onclick="showClue('red')" style="color: red;">Sarkanā komanda</button>
+      <button onclick="showClue('blue')" style="color: blue;">Zilā komanda</button>
+      <button onclick="showClue('green')" style="color: green;">Zaļā komanda</button>
+      <button onclick="showClue('yellow')" style="color: goldenrod;">Dzeltenā komanda</button>
+    </div>
   </div>
 
   <div id="clueBox" class="clue-box hidden"></div>
@@ -107,16 +118,19 @@ Kur ābolmaize smaržo un mīļi tev smaida,
 Kur tējas tase virtuvē gaida.
 Ne skolā, ne darbā, ne veikalā lielā,
 Bet pie omes uz mājām ved tavs ceļš.`,
+
       blue: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
 Te nedejo valsi, bet cīnās kā zvēri.
 Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`,
+
       green: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
 Te nedejo valsi, bet cīnās kā zvēri.
 Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`,
+
       yellow: `Eccellente, Kapteinis priecājas par jūsu veiklo burtošanu! Vai varat atminēt nākamo ceļojuma pieturvietu?
 Te zeme ir cieta, bet tas nav betons,
 Te sprintu skrien uz asmeņiem, ne zolēm,
@@ -126,20 +140,28 @@ Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const input = form.querySelector('input');
-      const correctAnswer = input.dataset.answer.trim().toLowerCase();
-      const userAnswer = input.value.trim().toLowerCase();
 
-      if (userAnswer === correctAnswer) {
+      const inputs = form.querySelectorAll('input');
+      let allCorrect = true;
+
+      inputs.forEach(input => {
+        const correct = input.dataset.answer.trim().toLowerCase();
+        const user = input.value.trim().toLowerCase();
+        if (user !== correct) {
+          allCorrect = false;
+        }
+      });
+
+      if (allCorrect) {
         form.classList.add('hidden');
         teamSection.classList.remove('hidden');
       } else {
-        alert("Incorrect answer. Please try again!");
+        alert("Some answers are incorrect. Please try again!");
       }
     });
 
     function showClue(color) {
-      clueBox.textContent = clues[color];
+      clueBox.innerHTML = clues[color].replace(/\n/g, '<br>');
       clueBox.classList.remove('hidden');
     }
   </script>
